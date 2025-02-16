@@ -1,21 +1,21 @@
-import turtle                           
-import time                             
-import random                           
+import turtle                           #Libreria para construir la interfaz gráfica
+import time                             #Libreria para obtenier el tiempo
+import random                           #Libreria para usar numeros random
 
 posponer = 0.1
 puntaje = 0
 maxPuntaje = 0
 
 #Configuración
-window = turtle.Screen()                
-window.title('Snake')                   
-window.bgcolor('#353535')               
-window.setup(width=600,height=600)      
-window.tracer(0)                        
+window = turtle.Screen()                #Crea una ventana nueva
+window.title('Snake')                   #Poner titulo
+window.bgcolor('#353535')               #Color de fondo
+window.setup(width=600,height=600)      #Redimensiona la pantalla
+window.tracer(0)                        #Animación mas visual
 
 #Cabeza de la serpiente
-cabeza = turtle.Turtle()                
-cabeza.speed(0)                         
+cabeza = turtle.Turtle()                #Crea un objeto para mostrar en pantalla
+cabeza.speed(0)                         #Se muestra al inciar
 cabeza.shape('square')                  
 cabeza.color('#75C46D')                 
 cabeza.penup()                          
@@ -70,15 +70,15 @@ def movimiento():
         cabeza.sety(y + 20)             
 
     elif cabeza.direction == 'down':
-        y =  cabeza.ycor()              
+        y =  cabeza.ycor()              #Obtiene la coordena Y
         cabeza.sety(y - 20)
 
     elif cabeza.direction == 'left':
-        x =  cabeza.xcor()              
+        x =  cabeza.xcor()              #Obtiene la coordena X
         cabeza.setx(x - 20)
 
     elif cabeza.direction == 'right':
-        x =  cabeza.xcor()              
+        x =  cabeza.xcor()              #Obtiene la coordena X
         cabeza.setx(x + 20)
 
 #Creacion del cuerpo
@@ -96,10 +96,10 @@ def crearSegmento():
 
 #Colisión con la comida
 def colisionComida():
-    if cabeza.distance(comida)<20:      
+    if cabeza.distance(comida)<20:      #Se mira la distancia entre la cabeza y la comida
         x = random.randint(-280,280)
         y = random.randint(-280, 280)
-        comida.goto(x,y)                
+        comida.goto(x,y)                #Se actualiza la posición de la comida a un random
         crearSegmento()
 
 #Mover el cuerpo
@@ -108,12 +108,12 @@ def movCuerpo():
 
     #Cada elemento sigue al anterior
     #Exepto el primero
-    for segmento in range(totalSeg-1,0,-1):     
-        x = cuerpo[segmento-1].xcor()           
+    for segmento in range(totalSeg-1,0,-1):     #Va desde el ultimo segmento hasta el primero
+        x = cuerpo[segmento-1].xcor()           #Detecta las coordenadas del elemento anterior
         y = cuerpo[segmento-1].ycor()
-        cuerpo[segmento].goto(x,y)              
+        cuerpo[segmento].goto(x,y)              #Se dirige a la posición del elemento anterior
 
-    if totalSeg >0:                             
+    if totalSeg >0:                             #Debe haber almenos un elemento para que este siga a la cabeza
         x = cabeza.xcor()
         y = cabeza.ycor()
         cuerpo[0].goto(x,y)
@@ -126,9 +126,9 @@ def borde():
         time.sleep(0.5)
         cabeza.goto(0,0)
         cabeza.direction = 'stop'
-        for segmento in cuerpo:         
+        for segmento in cuerpo:        
             segmento.goto(1000,1000)
-        cuerpo.clear()                  
+        cuerpo.clear()                
         puntaje = 0
         printText()
 
@@ -140,9 +140,9 @@ def mordida():
             time.sleep(0.5)
             cabeza.goto(0, 0)
             cabeza.direction = 'stop'
-            for segmento in cuerpo:  
+            for segmento in cuerpo:  # Esconde los segmentos
                 segmento.goto(1000, 1000)
-            cuerpo.clear()  
+            cuerpo.clear()  # Limpia la lista
             puntaje = 0
             printText()
 
@@ -155,12 +155,12 @@ window.onkeypress(derecha,'Right')
 
 #Ciclo permanente
 while True:
-    window.update()                     
+    window.update()                     #Actualizar la pantalla
 
     borde()
     colisionComida()                    
     mordida()
     movCuerpo()                         
-    movimiento()                        
+    movimiento()                       
 
-    time.sleep(posponer)                
+    time.sleep(posponer) 
